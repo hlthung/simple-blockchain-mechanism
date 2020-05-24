@@ -1,0 +1,6 @@
+message Test {
+    required string timeStamp = 1;
+    required string data = 2;
+    required float wealth = 3;
+    optional bool updateWebsite = 4;
+}

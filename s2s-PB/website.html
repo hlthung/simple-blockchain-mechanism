@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>S1 | BLOCKCHAIN TRANSACTIONS</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="node_modules/jquery/dist/jquery.min.js"></script>
+        <script src = "/socket.io/socket.io.js" ></script>
+        <script language="JavaScript" type="text/javascript" src = "server1.js" ></script>
+        <script>
+            $(document).ready(function(){
+                var socket = io.connect("http://localhost:3000");
+                $("#submit").on("click", () => {
+                    //required fields are not filled
+                    if($("#sender").val() === "" || $("#receiver").val() === "" || $("#amount").val() === ""){
+                        alert("Please fill in the required fields: From, To, Amount");
+                    }
+                    else{
+                        //extracting inputs and putting as JSON data
+                        var jsonData = {
+                            from: $("#sender").val(),
+                            to: $("#receiver").val(),
+                            amount: $("#amount").val(),
+                            desc: $("#desc").val()
+                        };
+                        socket.emit("clientData", jsonData);
+                        //status notifying client that transaction is being processed
+                        $("#status").html("");
+                    }
+                });
+                
+                //when server notifies if transaction is success/failure
+                socket.on("updateStatus", (data) => {
+                    $("#status").html(data);
+                });
+            });
+        </script>
+    </head>
+
+    <body>  
+            <div class="row4">
+                <div class="col-md-12">
+                    <h2 style="text-align:  center;">BLOCKCHAIN TRANSACTION / SERVER 1</h2>
+                </div>
+            </div>
+            <div class="row4">
+                <div class="col-md-6" style="background-color: #fff;">
+                    <div class="form">
+                        FROM: <input type="text" id="sender"></br></br>
+                        TO: <input type="text" id="receiver"></br></br>
+                        AMOUNT: <input type="text" id="amount"></br></br>
+                        DESCRIPTION: <input type="text" id="desc"></br></br>
+
+                        <button id="submit">SUBMIT</button>
+                    </div>
+                </div>
+                <div class="col-md-6" style="background-color: #fff;">
+                    <p style="margin-top: 105px">
+                        <span style="font-size:  30px;letter-spacing: 4px;">STATUS : </span>
+                        <p style="margin-bottom: 151px;">
+                        <span id="status">-</span>
+                    </p>
+                </div>
+            </div>
+            <div class="row4">
+                <div class="col-md-12" style="margin-top: 10px; text-align: center;">
+                    <span>All transactions are validated using Proof of Stake algorithm and recorded using Blockchain algorithm. This website is secured and safe to use.</span>
+                </div>
+            </div>
+
+            <style>
+                body {
+                    background-color: #F2F2F2;
+                }
+
+                .form {
+                    text-align: right;
+                    margin-top: 40px;
+                    margin-bottom: 40px;
+                    letter-spacing: 2px;
+                }
+
+                p {
+                    text-align: center;
+                }
+
+                input {
+                    border: 1px solid #FFC300;
+                    padding: 5px;
+                    width: 60%;
+                }
+
+                button {
+                    padding: 10px;
+                    background-color: #000;
+                    color: white;
+                    border: none;
+                    border-radius: 4px;
+                    width: 30%;
+                    letter-spacing: 2px;
+
+                }
+            </style>
+    </body>
+</html>

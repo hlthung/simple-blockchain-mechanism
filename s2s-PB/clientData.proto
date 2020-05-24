@@ -1,0 +1,6 @@
+message Test {
+    required string from = 1;
+    required string to = 2;
+    required float amount = 3;
+    optional string desc = 4;
+}
